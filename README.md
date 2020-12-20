@@ -7,4 +7,6 @@
 
 目前学习还未完成，完成后补充完整。
 
+文档中图床为github，打不开图片的同学可查看github hosts文件自行更换hosts文件
+
 笔记整理By killian.q@outlook.com
