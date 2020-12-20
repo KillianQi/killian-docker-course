@@ -36,6 +36,7 @@ Docker官方仓库地址：https://hub.docker.com/
 >传统的虚拟机
 
 ![20201220114806](https://raw.githubusercontent.com/KillianQi/KillianQi-Killian-Private-Image/main/img/20201220114806.png)
+
 虚拟机技术的缺点：
 1.系统资源占用多
 2.冗余步骤多
@@ -43,15 +44,20 @@ Docker官方仓库地址：https://hub.docker.com/
 
 >容器化技术
 
+
 *容器化技术不是模拟的一个完整的操作系统*
+
 ![20201220115330](https://raw.githubusercontent.com/KillianQi/KillianQi-Killian-Private-Image/main/img/20201220115330.png)
+
 
 比较Docker 和虚拟机技术的不同：
 * 传统虚拟机，虚拟相关硬件，运行一个完整的操作系统，然后在这个操作系统上安装和运行软件
 * 容器内的应用直接运行在宿主机的内容，容器是没有自己的内核的，也没有虚拟硬件，所以轻便
 * 每个容器间是互相隔离的，每个容器都有自己的文件系统，互不影响
 
+
 > DevOps 开发运维
+
 
 **应用更快的交付和部署**
 
