@@ -1,0 +1,80 @@
+# Commit 
+
+
+```
+
+docker commit       # 提交容器成为一个新的副本
+
+# 命令和git命令类似
+
+docker commit -m="提交的描述信息" -a="做着" 容器id 目标镜像名:[TAG]
+
+```
+
+## 操作过程
+
+
+
+**1.启动一个从docker hub上拉取的tomcat**
+
+```
+[root@killiandocker01 home]# docker run -it -p 8080:8080 tomcat
+Using CATALINA_BASE:   /usr/local/tomcat
+Using CATALINA_HOME:   /usr/local/tomcat
+Using CATALINA_TMPDIR: /usr/local/tomcat/temp
+Using JRE_HOME:        /usr/local/openjdk-11
+Using CLASSPATH:       /usr/local/tomcat/bin/bootstrap.jar:/usr/local/tomcat/bin/tomcat-juli.jar
+Using CATALINA_OPTS:
+NOTE: Picked up JDK_JAVA_OPTIONS:  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+
+```
+
+
+
+**2.启动后发现,这个默认的tomcat并没有webapps, 原因是官方镜像,默认webapps下没有任何内容**
+
+```
+
+[root@killiandocker01 /]# docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS          PORTS                                            NAMES
+130228dfc262   tomcat                "catalina.sh run"        11 seconds ago   Up 10 seconds   0.0.0.0:8080->8080/tcp                           amazing_panini
+[root@killiandocker01 /]# docker exec -it 130228dfc262 /bin/bash
+root@130228dfc262:/usr/local/tomcat# cd webapps
+root@130228dfc262:/usr/local/tomcat/webapps# ls
+
+```
+
+
+**3.现手动将webapps.dist下的文件拷贝至webapps目录下**
+
+```
+
+root@130228dfc262:/usr/local/tomcat/webapps# cd ..
+root@130228dfc262:/usr/local/tomcat# cp -r webapps.dist/* /webapps
+cp: target '/webapps' is not a directory
+root@130228dfc262:/usr/local/tomcat# cp -r webapps.dist/* webapps/
+root@130228dfc262:/usr/local/tomcat# cd webapps
+root@130228dfc262:/usr/local/tomcat/webapps# ls
+ROOT  docs  examples  host-manager  manager
+
+```
+
+**4.将修改后的docker使用commit命令打包为一个新的镜像**
+
+```
+[root@killiandocker01 /]# docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS          PORTS                                            NAMES
+130228dfc262   tomcat                "catalina.sh run"        21 minutes ago   Up 21 minutes   0.0.0.0:8080->8080/tcp                           amazing_panini
+[root@killiandocker01 /]# docker commit -a="killian" -m="add webapps app" 130228dfc262 tomcat777:1.0
+sha256:525bba26e0de354a29e2ee8cc5b8d79697c05d8f2443e80826ed2315437db857
+[root@killiandocker01 /]# docker images
+REPOSITORY            TAG       IMAGE ID       CREATED         SIZE
+tomcat777             1.0       525bba26e0de   8 seconds ago   654MB
+tomcat                9.0       feba8d001e3f   3 days ago      649MB
+[root@killiandocker01 /]#
+
+# 可以看到新打包的image体积略大于原有镜像,原因为复制了webapps.dist下的文件到webapps下
+
+```
+
+**如果想要保存当前容器的状态,就可以通过commit进行提交,获得一个镜像,类似快照**
