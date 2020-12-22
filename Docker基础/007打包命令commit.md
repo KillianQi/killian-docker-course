@@ -7,7 +7,7 @@ docker commit       # 提交容器成为一个新的副本
 
 # 命令和git命令类似
 
-docker commit -m="提交的描述信息" -a="做着" 容器id 目标镜像名:[TAG]
+docker commit -m="提交的描述信息" -a="作者" 容器id 目标镜像名:[TAG]
 
 ```
 
