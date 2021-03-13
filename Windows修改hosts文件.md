@@ -6,7 +6,6 @@
 
 
 ```
-
 # GitHub Start
 192.30.255.112	gist.github.com
 192.30.255.112	github.com
